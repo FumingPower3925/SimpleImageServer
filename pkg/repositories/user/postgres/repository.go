@@ -16,25 +16,25 @@ func NewPostgresUserRepository(data *db.Data) *postgresUserRepository {
 }
 
 func (ur *postgresUserRepository) CheckCredentialsUser(ctx context.Context, id string, password string) (bool, error) {
-	query := `SELECT * FROM users WHERE id_usuario = $1 AND password = $2`
+	query := `SELECT * FROM users WHERE id = $1 AND password = $2`
 	row, err := ur.Data.DB.QueryContext(ctx, query, id, password)
 
 	if err != nil {
 		return false, err
 	}
 
-	return row.Next(), nil
+	return row != nil, nil
 }
 
 func (ur *postgresUserRepository) ExistsCreator(ctx context.Context, id string) (bool, error) {
-	query := `SELECT * FROM users WHERE id_usuario = $1`
+	query := `SELECT * FROM users WHERE id = $1`
 	row, err := ur.Data.DB.QueryContext(ctx, query, id)
 
 	if err != nil {
 		return false, err
 	}
 
-	return row.Next(), nil
+	return row != nil, nil
 }
 
 func (ur *postgresUserRepository) CreateUser(ctx context.Context, user *models.User) error {

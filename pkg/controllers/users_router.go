@@ -55,9 +55,9 @@ func (ur *UserRouter) CheckCredentialsHandler(w http.ResponseWriter, r *http.Req
 
 	if !valid {
 		responses.JSON(w, r, http.StatusForbidden, responses.Map{})
+	} else {
+		responses.JSON(w, r, http.StatusOK, responses.Map{"valid": valid})
 	}
-
-	responses.JSON(w, r, http.StatusOK, responses.Map{"valid": valid})
 }
 
 func (ur *UserRouter) ExistsHandler(w http.ResponseWriter, r *http.Request) {
@@ -87,7 +87,7 @@ func (ur *UserRouter) DeleteHandler(w http.ResponseWriter, r *http.Request) {
 func (ur *UserRouter) Routes() http.Handler {
 	r := chi.NewRouter()
 
-	r.Post("/id", ur.CreateHandler)
+	r.Post("/", ur.CreateHandler)
 
 	r.Get("/{id}{password}", ur.CheckCredentialsHandler)
 
